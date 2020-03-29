@@ -1,5 +1,5 @@
 #include "mbed.h"
-#define fs = 400	// 400 hertz for sampling frequency
+#define fs  400	// 400 hertz for sampling frequency
 #define abs(a) (a >= 0? a: (-1 * a))	// absolute value
 
 BusOut display(D6, D7, D9, D10, D11, D5, D4, D8);
@@ -10,7 +10,7 @@ DigitalOut greenLED(LED2);
 AnalogOut Aout(DAC0_OUT);
 AnalogIn Ain(A0);
 
-void 7seg(double freq, int NumDig);	// number of digits
+void sevenSeg(double freq);	// number of digits
 int CountFreq(double *A);	// how many samples to repeat
 int pwrOfTen(int pwr);	// calculate 10^pwr
 int NumOfDigit(double x);	/* calculate number of digit
@@ -21,7 +21,7 @@ int main() {
 	double freq;		// the desired frequency
 
 	for (int t = 0; t < 0.1; t += 1 / fs) {
-		Data[i] = Ain;	// sampling
+		Data[t] = Ain;	// sampling
 		wait(1 / fs);
 	}
 	freq = fs / CountFreq(Data);
@@ -30,7 +30,7 @@ int main() {
 		if (Switch == 1) {
 			greenLED = 0;
 			redLED = 1;
-			7seg(freq);
+			sevenSeg(freq);
 		}
 		else {
 			redLED = 0;
@@ -39,7 +39,7 @@ int main() {
 	}
 }
 
-void 7seg(double freq)
+void sevenSeg(double freq)
 {
 	/* build an array of each digit to display */
 	int n = NumOfDigit(freq);
@@ -62,12 +62,13 @@ void 7seg(double freq)
 }
 int CountFreq(double *A)
 {
-	int flag = 0, i;
+	bool flag = false; 
+	unsigned int i;
 
-	for (i = 1; flag == 0 && i < sizeof(A); i++) {
-		flag = 1;
-		for (int j = 0; j < sizeof(A) - i; j++) {
-			if (abs(A[j] - A[j + i]) > 0.1) flag = 0;
+	for (i = 1; flag == false && i < sizeof(A); i++) {
+		flag = true;
+		for (unsigned int j = 0; j < sizeof(A) - i; j++) {
+			if (abs(A[j] - A[j + i]) > 0.1) flag = false;
 		}
 	}
 
@@ -83,6 +84,6 @@ int pwrOfTen(int pwr)
 int NumOfDigit(double x)
 {
 	int i;
-	for (i = 0; x >= pwrofTen(i); i++);
+	for (i = 0; x >= pwrOfTen(i); i++);
 	return i;
 }
