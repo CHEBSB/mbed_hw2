@@ -57,9 +57,9 @@ int main() {
 		else {
 			redLED = 0;
 			greenLED = 1;
-			for (double t = 0; t < (1 / freq); t += (0.1 / freq)) {
+			for (double t = 0; t < (1 / freq); t += (0.01 / freq)) {
 				Aout = sin(2 * 3.14159 * freq * t);
-				wait(0.1 / freq);
+				wait(0.01 / freq);
 			}
 		}
 	}
