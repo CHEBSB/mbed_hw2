@@ -24,14 +24,13 @@ int main() {
 		wait(1 / fs);
 	}
 	if (CountPeriod(Data, 40) == 0) {	// which shouldn't be 0
-		redLED = 1;
+		redLED = 1;	// light up redLED, showing error
 		while (1) {}
 	}
 	freq = fs / CountPeriod(Data, 40);
 
-	/* build an array of each digit to display */
-	int f = (int)freq;	// integer part of freq to modify
-	if (freq - f >= 0.5) f++;	
+	int f = (int)freq;	// integer part of freq
+	if (freq - f >= 0.5) f++;	// to the nearest integer
 	n = NumOfDigit(f);
 	d = new int[n];
 	for (int i = n - 1; i >= 0; i--) {
@@ -51,15 +50,15 @@ int main() {
 				}
 				else
 					display = table[d[t]];
-				wait(0.25);
+				wait(0.2);
 			}
 		}
 		else {
 			redLED = 0;
 			greenLED = 1;
-			for (double t = 0; t < (1 / freq); t += (0.01 / freq)) {
+			for (double t = 0; t < (1 / freq); t += (0.05 / freq)) {
 				Aout = 0.5 + 0.5 * sin(2 * 3.14159 * freq * t);
-				wait(0.01 / freq);
+				wait(0.05 / freq);
 			}
 		}
 	}
@@ -70,10 +69,14 @@ int CountPeriod(double *A, int size)
 	bool flag = 0;
 	int i;
 
-	for (i = 1; flag == 0 && i <= size / 2; i++) {
-		flag = 1;
+	for (i = 1; flag == 0 && i <= size / 2; i++) {	
+	/* test every i until size / 2 
+	(even if we can get a period > size / 2,
+	 we can't assure its correctness ) */
+		flag = 1;	// for each i, first set flag = 1
 		for (int j = 0; j < size - i; j++) 
 			if ((A[j] - A[j + i] > 0.2) || (A[j + i] - A[j] > 0.2)) 
+			// if any 2 elements do not match the period
 				flag = 0;
 	}
 
