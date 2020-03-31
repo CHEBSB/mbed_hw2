@@ -59,9 +59,9 @@ int main() {
 		}
 		else {
 			display = 0x00;
-			for (double t = 0; t < (1 / freq); t += (0.05 / freq)) {
+			for (double t = 0; t < (1 / freq); t += (0.04 / freq)) {
 				Aout = 0.5 + 0.5 * sin(2 * 3.14159 * freq * t);
-				wait(0.05 / freq);
+				wait(0.04 / freq);
 			}	
 		}
 		
