@@ -31,9 +31,8 @@ int main() {
   	}	
 	freq = fs / CountPeriod(Data, 100);
 
-	int f = (int)freq;	/* integer part of freq
-	fs is interger (400), CountPeriod return integer
-	-> actually f = freq */
+	int f = (int)freq;	// integer part of freq
+	if (freq - f >= 0.5) f++; // round off
 	n = NumOfDigit(f);
 	d = new int[n];
 	for (int i = n - 1; i >= 0; i--) {
