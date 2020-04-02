@@ -15,7 +15,6 @@ int CountPeriod(double *A, int size); // how many samples to repeat
 int pwrOfTen(int pwr);	// calculate 10^pwr
 int NumOfDigit(int n);	/* calculate number of digits
 of the nearest integer to frequency */
-void setAout();
 
 int main() {
 	double Data[100];	// store data to calculate frequency
